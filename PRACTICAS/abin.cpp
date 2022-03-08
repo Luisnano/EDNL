@@ -170,4 +170,25 @@ typename Abin<T>::nodo Abin<T>::copiar(nodo n)
     return m;
 }
 
+//RESOLUCION DEL PROFESOR DEL EJERCICIO 7
+template <typename T>
+int desequilibrioAbin (Abin<T>::Abin)
+{
+    return desequilibrioAbin_Rec(Raiz(A), A);
+}
 
+int desequilibrioAbin_Rec(nodo n, A Abin)
+{
+    if (n == NODO_NULO){
+        return 0;
+    }
+}
+/*Resolucion del profesor
+si altura(hderecho)>altura(hizquierdo)
+    devolver true
+sino
+    si altura(hizquierdo)>altura(hderecho)
+        devolver true
+    sino
+        pseudocompleto(hderecho) AND psedocompleto(hizquierdo)
+*/
