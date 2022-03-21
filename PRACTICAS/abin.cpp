@@ -324,8 +324,20 @@ int desequilibrio(Abin<T>& A, typename Abin<T>::nodo n){
     if (n == Abin<T>::NODO_NULO){
         return 0;
     }else{
-        return altura(A, A.hijoDrcho(n)) - altura(A, A.hijoIzqdo(n));
+        /*Hacemos estas dos comprobaciones para asegurarnos de que el desequilibrio no nos de negativo*/
+        if (altura(A, A.hijoDrcho(n)) > altura(A, A.hijoIzqdo(n))){
+            return altura(A, A.hijoDrcho(n)) - altura(A, A.hijoIzqdo(n));
+        }
+        if (altura(A, A.hijoDrcho(n)) < altura(A, A.hijoIzqdo(n))){
+            return altura(A, A.hijoIzqdo(n)) - altura(A, A.hijoDrcho(n));
+        }
     }
+}
+
+    /*No creo yo que esto este bien la vd*/
+template <typename T>
+int funcion_desequilibrio(Abin<T>& A, typename Abin<T>::nodo n){
+    return std::max(desequilibrio(A, A.hijoDrcho(n)), desequilibrio(A, A.hijoIzqdo(n)));
 }
 
 
