@@ -170,19 +170,7 @@ typename Abin<T>::nodo Abin<T>::copiar(nodo n)
     return m;
 }
 
-//RESOLUCION DEL PROFESOR DEL EJERCICIO 7
-template <typename T>
-int desequilibrioAbin (Abin<T>::Abin)
-{
-    return desequilibrioAbin_Rec(Raiz(A), A);
-}
 
-int desequilibrioAbin_Rec(nodo n, A Abin)
-{
-    if (n == NODO_NULO){
-        return 0;
-    }
-}
 /*Resolucion del profesor
 si altura(hderecho)>altura(hizquierdo)
     devolver true
@@ -314,30 +302,50 @@ int altura (Abin<T>& A, typename Abin<T>::nodo n){
     }
 }
 
-    /*De momento este codigo devuelve la diferencia de alturas de los subarboles de la raiz, pero
-    quiero el desequilibrio de TODOS y quedarme con el MAXIMO de TODOS ELLOS.
-    Es decir en ambito de nodos, esto lo aplica SOLO al nodo que se le pase.
-    Problema, en el estado que está, no es recursivo. Por lo que el delahuerta se cagará en mi
-    pecho y lo llamará tarta de cumpleaños. */
+template <typename T>
+int difaltura (Abin<T>& A, typename Abin<T>::nodo n){
+    return std::abs(altura(A, A.hijoDrcho(n)) - altura(A, A.hijoIzqdo(n)));
+    }
+
+
 template <typename T>
 int desequilibrio(Abin<T>& A, typename Abin<T>::nodo n){
     if (n == Abin<T>::NODO_NULO){
         return 0;
     }else{
-        /*Hacemos estas dos comprobaciones para asegurarnos de que el desequilibrio no nos de negativo*/
-        if (altura(A, A.hijoDrcho(n)) > altura(A, A.hijoIzqdo(n))){
-            return altura(A, A.hijoDrcho(n)) - altura(A, A.hijoIzqdo(n));
-        }
-        if (altura(A, A.hijoDrcho(n)) < altura(A, A.hijoIzqdo(n))){
-            return altura(A, A.hijoIzqdo(n)) - altura(A, A.hijoDrcho(n));
+        return std::max(difaltura(A, n), std::max(desequilibrio(A, A.hijoIzqdo(n)), desequilibrio(A, A.hijoDrcho(n))));
+    }
+}
+
+template <typename T>
+int funcion_desequilibrio(Abin<T>& A){
+    return desequilibrio(A, A.raiz());
+}
+
+/*Ejercicio 7 de la Práctica 1
+    Un arbol se denomina pseudocompleto cuando en el penúltimo nivel, cada uno de sus nodos tiene
+    2 o ningun hijo. */
+
+template <typename T>
+bool pseudocompleto_rec(Abin<T>& a, typename Abin<T>::nodo n){
+    if ( altura(a.hijoDrcho(n)) > altura(a.hijoIzqdo(n)) ){
+        return true;
+    }else{
+        if ( altura(a.hijoIzqdo(n)) > altura(a.hijoDrcho(n)) ){
+            return true;
+        }else{
+            return pseudocompleto_rec(a.hijoDrcho(n)) && pseudocompleto_rec(a.hijoIzqdo(n));
         }
     }
 }
 
-    /*No creo yo que esto este bien la vd*/
 template <typename T>
-int funcion_desequilibrio(Abin<T>& A, typename Abin<T>::nodo n){
-    return std::max(desequilibrio(A, A.hijoDrcho(n)), desequilibrio(A, A.hijoIzqdo(n)));
+bool pseudocompleto(Abin<T>& a){
+    if (a.arbolVacio()){
+        return false;
+    }else{
+        return pseudocompleto(a, a.raiz());
+    }
 }
 
 
