@@ -192,3 +192,141 @@ sino
     sino
         pseudocompleto(hderecho) AND psedocompleto(hizquierdo)
 */
+
+/*-----------------------------RESOLUCIONES DE LA P1 Y LA P2--------------------------------*/
+
+/*Problema 1 de la Práctica 1
+    Implementar un subprograma que calcule el numero de nodos de un arbol*/
+
+template <typename T>
+int numNodos_rec(Abin<T>& A, typename Abin<T>::nodo n){
+
+    if (n == Abin<T>::NODO_NULO){
+
+        return 0;
+
+    }else{
+
+        return 1 + numNodos_rec(A, A.hijoDrcho(n)) + numNodos_rec(A, A.hijoIzqdo(n));
+
+    }
+
+}
+
+template <typename T>
+int numNodos(Abin<T>& A){
+
+    if (!A.arbolVacio()){
+
+        return numNodos_rec(A, A.raiz());
+
+    }else{
+
+        return 0;
+
+    }
+
+}
+
+
+/*Problema 2 de la Práctica 1
+    Implementar un subprograma que calcule la altura de un arbol binario*/
+
+template <typename T>
+int alturaBinario_rec(Abin<T>& A, typename Abin<T>::nodo n){
+
+    if (n == Abin<T>::NODO_NULO){
+
+        return -1;
+
+    }else{
+
+        return 1 + std::max(alturaBinario_rec(A, A.hijoDrcho(n)), alturaBinario_rec(A, A.hijoIzqdo(n)));
+
+    }
+
+}
+
+template <typename T>
+int alturaBinario(Abin<T>& A){
+
+    if (!A.arbolVacio()){
+
+        return alturaBinario_rec(A, A.raiz());
+
+    }else{
+
+        return 0;
+
+    }
+
+}
+
+
+/*Problema 3 de la Práctica 3
+    Dados un arbol binario y un nodo del mismo, determine la profundidad de dicho nodo en el arbol.*/
+
+template <typename T>
+int profNodo_rec(Abin<T>& A, typename Abin<T>::nodo nodo_profundo, typename Abin<T>::nodo n){
+
+    if (A.hijoDrcho(n) != nodo_profundo){
+
+        /*Al ser un OR sabemos que entrara en el if si uno de los dos se da o los dos*/
+
+        return 1 + profNodo_rec(A, nodo_profundo, A.hijoDrcho(n));
+
+    }else{
+
+        if (A.hijoIzqdo(n) != nodo_profundo){
+
+            return 1 + profNodo_rec(A, nodo_profundo, A.hijoIzqdo(n));
+        
+        }
+
+    }
+
+
+}
+
+template <typename T>
+int profNodo(Abin<T>& A, typename Abin<T>::nodo nodo_profundo){
+
+    if (!A.arbolVacio() || A.raiz() != Abin<T>::NODO_NULO){
+
+        return profNodo_rec(A, nodo_profundo, A.raiz());
+
+    }
+
+}
+
+/*Problemas 4 y 5 hechos en sus respectivas representaciones vectoriales y vecrel*/
+
+/*Problema 6 de la Práctica 1
+    Hacer un subprograma que determine el nivel de desequilibrio de un arbol binario, definido como
+    el maximo desequilibrio de todos sus nodos
+    El desequilibrio es la diferencia de la altura de los subarboles.*/
+template <typename T>
+int altura (Abin<T>& A, typename Abin<T>::nodo n){
+    if (n == Abin<T>::NODO_NULO){
+        return -1;
+    }else{
+        return 1 + std::max(altura(A, A.hijoDrcho(n)), altura(A, A.hijoIzqdo(n)));
+    }
+}
+
+    /*De momento este codigo devuelve la diferencia de alturas de los subarboles de la raiz, pero
+    quiero el desequilibrio de TODOS y quedarme con el MAXIMO de TODOS ELLOS.
+    Es decir en ambito de nodos, esto lo aplica SOLO al nodo que se le pase.
+    Problema, en el estado que está, no es recursivo. Por lo que el delahuerta se cagará en mi
+    pecho y lo llamará tarta de cumpleaños. */
+template <typename T>
+int desequilibrio(Abin<T>& A, typename Abin<T>::nodo n){
+    if (n == Abin<T>::NODO_NULO){
+        return 0;
+    }else{
+        return altura(A, A.hijoDrcho(n)) - altura(A, A.hijoIzqdo(n));
+    }
+}
+
+
+/*------------------------------------------------------------------------------------------*/
