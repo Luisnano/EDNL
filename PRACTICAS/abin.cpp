@@ -13,6 +13,11 @@ inline void Abin<T>::insertarRaiz(const T& e)
     r = new celda(e);
 }
 
+
+
+
+
+
 template <typename T>
 inline void Abin<T>::insertarHijoIzqdo(nodo n, const T& e)
 {
@@ -350,3 +355,57 @@ bool pseudocompleto(Abin<T>& a){
 
 
 /*------------------------------------------------------------------------------------------*/
+
+
+
+
+
+
+/*--------------------------------RESOLUCIÓN DE LA PRÁCTICA 2-------------------------------*/
+
+/*Problema 1 de la Práctica 2
+    Dados dos arboles, determinar si son similares. Esto es si tienen la misma estructura, es decir que si
+    ambos son vacíos, o en caso contrario, tienen subárboles izquierdo y derecho similares*/
+
+template <typename T>
+bool similares_rec (Abin<T>& a, Abin<T>& b, typename Abin<T>::nodo na, typename Abin<T>::nodo nb){
+    if (a.hijoDrcho(na) != Abin<T>::NODO_NULO && b.hijoDrcho(nb) != Abin<T>::NODO_NULO){
+        /*Entonces esq ambos tienen hijo derecho asi que avanzamos por ese lado*/
+        return similares_rec(a, b, a.hijoDrcho(na), b.hijoDrcho(nb));
+    }
+    if (a.hijoIzqdo(na) != Abin<T>::NODO_NULO && b.hijoIzqdo(nb) != Abin<T>::NODO_NULO){
+        /*Entonces esq ambos tienen hijo izquierdo asi que avanzamos por ese lado*/
+        return similares_rec(a, b, a.hijoIzqdo(na), b.hijoIzqdo(nb));
+    }
+    if (a.hijoDrcho(na) == Abin<T>::NODO_NULO && b.hijoDrcho(nb) == Abin<T>::NODO_NULO){
+        /*Entonces esq ambos tienen hijo derecho nulo asi que avanzamos por el lado contrario*/
+        return similares_rec(a, b, a.hijoIzqdo(na), b.hijoIzqdo(nb));
+    }
+    if (a.hijoIzqdo(na) == Abin<T>::NODO_NULO && b.hijoIzqdo(nb) == Abin<T>::NODO_NULO){
+        /*Entonces esq ambos tienen hijo izquierdo nulo asi que avanzamos por el lado contrario*/
+        return similares_rec(a, b, a.hijoDrcho(na), b.hijoDrcho(nb));
+    }
+    /*Si ha llegado hasta aqui es por que ninguna de las condiciones anteriores son verdaderas, es decir, 
+    no se han cumplido las condiciones de que los arboles sean similares por lo que NO son arboles similares*/
+    return false;
+}
+
+template <typename T>
+bool similares (Abin<T>& a, Abin<T>& b){
+    if (a.arbolVacio() && b.arbolVacio()){
+        return true;
+    }else{
+        return similares_rec(a, b, a.raiz(), b.raiz());
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
